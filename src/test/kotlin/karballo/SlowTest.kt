@@ -1,0 +1,3 @@
+package karballo
+
+interface SlowTest
