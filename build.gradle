@@ -30,7 +30,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
         configurations.compile.each { println it.name }
     }
     ext {
-        obfuscatedJar = "../karballo.jar"
+        obfuscatedJar = "./karballo.jar"
     }
     injars jar.archivePath
     injars configurations.compile
