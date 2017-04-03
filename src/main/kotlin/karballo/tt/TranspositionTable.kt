@@ -166,7 +166,7 @@ class TranspositionTable(sizeMb: Int) {
         get() = (1000L * entriesOccupied / size).toInt()
 
     companion object {
-        private val logger = Logger.getLogger("MultiprobeTranspositionTable")
+        private val logger = Logger.getLogger("TranspositionTable")
 
         val DEPTH_QS_CHECKS = 0
         val DEPTH_QS_NO_CHECKS = -1
