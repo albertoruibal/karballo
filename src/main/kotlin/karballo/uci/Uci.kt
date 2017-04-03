@@ -68,21 +68,21 @@ class Uci : SearchObserver {
                     val value = tokens[index]
 
                     if ("Hash" == name) {
-                        config.transpositionTableSize = Integer.parseInt(value)
+                        config.transpositionTableSize = value.toInt()
                     } else if ("Ponder" == name) {
-                        config.ponder = java.lang.Boolean.parseBoolean(value)
+                        config.ponder = value.toBoolean()
                     } else if ("OwnBook" == name) {
-                        config.useBook = java.lang.Boolean.parseBoolean(value)
+                        config.useBook = value.toBoolean()
                     } else if ("UCI_Chess960" == name) {
-                        config.isUciChess960 = java.lang.Boolean.parseBoolean(value)
+                        config.isUciChess960 = value.toBoolean()
                     } else if ("UCI_LimitStrength" == name) {
-                        config.isLimitStrength = java.lang.Boolean.parseBoolean(value)
+                        config.isLimitStrength = value.toBoolean()
                     } else if ("UCI_Elo" == name) {
-                        config.elo = Integer.parseInt(value)
+                        config.elo = value.toInt()
                     } else if ("Evaluator" == name) {
                         config.evaluator = value
                     } else if ("ContemptFactor" == name) {
-                        config.contemptFactor = Integer.parseInt(value)
+                        config.contemptFactor = value.toInt()
                     }
                     needsReload = true
 
@@ -130,23 +130,23 @@ class Uci : SearchObserver {
                         } else if ("ponder" == arg1) {
                             searchParameters.isPonder = true
                         } else if ("wtime" == arg1) {
-                            searchParameters.wtime = Integer.parseInt(tokens[index++])
+                            searchParameters.wtime = tokens[index++].toInt()
                         } else if ("btime" == arg1) {
-                            searchParameters.btime = Integer.parseInt(tokens[index++])
+                            searchParameters.btime = tokens[index++].toInt()
                         } else if ("winc" == arg1) {
-                            searchParameters.winc = Integer.parseInt(tokens[index++])
+                            searchParameters.winc = tokens[index++].toInt()
                         } else if ("binc" == arg1) {
-                            searchParameters.binc = Integer.parseInt(tokens[index++])
+                            searchParameters.binc = tokens[index++].toInt()
                         } else if ("movestogo" == arg1) {
-                            searchParameters.movesToGo = Integer.parseInt(tokens[index++])
+                            searchParameters.movesToGo = tokens[index++].toInt()
                         } else if ("depth" == arg1) {
-                            searchParameters.depth = Integer.parseInt(tokens[index++])
+                            searchParameters.depth = tokens[index++].toInt()
                         } else if ("nodes" == arg1) {
-                            searchParameters.nodes = Integer.parseInt(tokens[index++])
+                            searchParameters.nodes = tokens[index++].toInt()
                         } else if ("mate" == arg1) {
-                            searchParameters.mate = Integer.parseInt(tokens[index++])
+                            searchParameters.mate = tokens[index++].toInt()
                         } else if ("movetime" == arg1) {
-                            searchParameters.moveTime = Integer.parseInt(tokens[index++])
+                            searchParameters.moveTime = tokens[index++].toInt()
                         } else if ("infinite" == arg1) {
                             searchParameters.isInfinite = true
                         }
@@ -231,7 +231,7 @@ class Uci : SearchObserver {
         internal val NAME = "Carballo Chess Engine v1.8"
         internal val AUTHOR = "Alberto Alonso Ruibal"
 
-        fun main(args: Array<String>) {
+        @JvmStatic fun main(args: Array<String>) {
             val uci = Uci()
             uci.loop()
         }
