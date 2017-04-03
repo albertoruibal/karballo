@@ -41,7 +41,6 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
     dontskipnonpubliclibraryclassmembers
     target '1.8'
     keep 'public class karballo.uci.Uci { *; }'
-    keep 'public class EpdTest { *; }'
     keepclassmembers 'class * extends java.lang.Enum {<fields>; public static **[] values(); public static ** valueOf(java.lang.String); }'
 
     doLast {
