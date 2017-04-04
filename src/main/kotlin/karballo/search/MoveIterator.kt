@@ -697,6 +697,6 @@ class MoveIterator(private var searchEngine: SearchEngine?, private val ai: Atta
         private val SCORE_UNDERPROMOTION = Int.MIN_VALUE + 1
         private val SCORE_LOWEST = Int.MIN_VALUE
 
-        val SEE_NOT_CALCULATED = java.lang.Short.MAX_VALUE.toInt()
+        val SEE_NOT_CALCULATED = Short.MAX_VALUE.toInt()
     }
 }
