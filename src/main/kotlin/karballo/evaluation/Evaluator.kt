@@ -23,7 +23,7 @@ abstract class Evaluator {
         val W = Color.W
         val B = Color.B
 
-        val NO_VALUE = java.lang.Short.MAX_VALUE.toInt()
+        val NO_VALUE = Short.MAX_VALUE.toInt()
         val MATE = 30000
         val KNOWN_WIN = 20000
         val DRAW = 0
