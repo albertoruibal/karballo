@@ -5,13 +5,11 @@ import karballo.Move
 import karballo.bitboard.BitboardUtils
 import karballo.log.Logger
 import karballo.search.SearchEngine
-import java.util.*
 
 /**
  * Transposition table using two keys and multiprobe
  *
- *
- * Uses part of the board's zobrist key (shifted) as the index
+ * It uses part of the board's zobrist key (shifted) as the index
 
  * @author rui
  */
@@ -44,7 +42,9 @@ class TranspositionTable(sizeMb: Int) {
 
     fun clear() {
         entriesOccupied = 0
-        Arrays.fill(keys, 0)
+        for (i in 0..keys.size - 1) {
+            keys[i] = 0
+        }
     }
 
     fun search(board: Board, distanceToInitialPly: Int, exclusion: Boolean): Boolean {
@@ -105,7 +105,7 @@ class TranspositionTable(sizeMb: Int) {
         val key2 = board.key2
         val startIndex = (if (exclusion) board.exclusionKey else board.getKey()).ushr(64 - sizeBits).toInt()
         var replaceIndex = startIndex
-        var replaceImportance = Integer.MAX_VALUE // A higher value, so the first entry will be the default
+        var replaceImportance = Int.MAX_VALUE // A higher value, so the first entry will be the default
 
         // Fix mate score with the real distance to mate from the current PLY, not from the initial PLY
         if (score >= SearchEngine.VALUE_IS_MATE) {

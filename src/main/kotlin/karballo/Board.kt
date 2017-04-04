@@ -18,7 +18,7 @@ class Board {
     internal var legalMoves = IntArray(256)
     internal var legalMoveCount = -1 // if -1 then legal moves not generated
     internal var legalMovesKey = longArrayOf(0, 0)
-    var movesSan: HashMap<Int, String>
+    var movesSan = HashMap<Int, String>()
 
     // Bitboard arrays
     var whites: Long = 0L
@@ -34,54 +34,32 @@ class Board {
     var fiftyMovesRule = 0
     var initialMoveNumber = 0
     var moveNumber = 0
-    var outBookMove = Integer.MAX_VALUE
+    var outBookMove = Int.MAX_VALUE
     var key = longArrayOf(0, 0)
 
     lateinit var initialFen: String
 
     // History array indexed by moveNumber
-    var keyHistory: Array<LongArray> // to detect draw by treefold
-    var moveHistory: IntArray
-    var whitesHistory: LongArray
-    var blacksHistory: LongArray
-    var pawnsHistory: LongArray
-    var rooksHistory: LongArray
-    var queensHistory: LongArray
-    var bishopsHistory: LongArray
-    var knightsHistory: LongArray
-    var kingsHistory: LongArray
-    var flagsHistory: LongArray
-    var fiftyMovesRuleHistory: IntArray
-    var seeGain: IntArray
+    var keyHistory = Array(MAX_MOVES) { LongArray(2) } // to detect draw by treefold
+    var moveHistory = IntArray(MAX_MOVES)
+    var whitesHistory = LongArray(MAX_MOVES)
+    var blacksHistory = LongArray(MAX_MOVES)
+    var pawnsHistory = LongArray(MAX_MOVES)
+    var rooksHistory = LongArray(MAX_MOVES)
+    var queensHistory = LongArray(MAX_MOVES)
+    var bishopsHistory = LongArray(MAX_MOVES)
+    var knightsHistory = LongArray(MAX_MOVES)
+    var kingsHistory = LongArray(MAX_MOVES)
+    var flagsHistory = LongArray(MAX_MOVES)
+    var fiftyMovesRuleHistory = IntArray(MAX_MOVES)
+    var seeGain = IntArray(32)
 
     // Origin squares for the castling rook {White Kingside, White Queenside, Black Kingside, Black Queenside}
     var castlingRooks = longArrayOf(0, 0, 0, 0)
 
     var chess960: Boolean = false // basically decides the destiny square of the castlings
 
-    internal var bbAttacks: BitboardAttacks
-
-    init {
-        whitesHistory = LongArray(Companion.MAX_MOVES)
-        blacksHistory = LongArray(Companion.MAX_MOVES)
-        pawnsHistory = LongArray(Companion.MAX_MOVES)
-        knightsHistory = LongArray(Companion.MAX_MOVES)
-        bishopsHistory = LongArray(Companion.MAX_MOVES)
-        rooksHistory = LongArray(Companion.MAX_MOVES)
-        queensHistory = LongArray(Companion.MAX_MOVES)
-        kingsHistory = LongArray(Companion.MAX_MOVES)
-        flagsHistory = LongArray(Companion.MAX_MOVES)
-        keyHistory = Array(Companion.MAX_MOVES) { LongArray(2) }
-        fiftyMovesRuleHistory = IntArray(Companion.MAX_MOVES)
-
-        seeGain = IntArray(32)
-
-        moveHistory = IntArray(Companion.MAX_MOVES)
-
-        movesSan = HashMap<Int, String>()
-
-        bbAttacks = BitboardAttacks.getInstance()
-    }
+    internal var bbAttacks = BitboardAttacks.getInstance()
 
     /**
      * It also computes the zobrist key
@@ -235,7 +213,7 @@ class Board {
         else if (queens and square != 0L)
             'q'
         else if (kings and square != 0L) 'k' else '.'
-        return if (whites and square != 0L) Character.toUpperCase(p) else p
+        return if (whites and square != 0L) p.toUpperCase() else p
     }
 
     fun getPieceUnicodeAt(square: Long): Char {
@@ -285,7 +263,7 @@ class Board {
             whites = whites and square.inv()
             blacks = blacks and square.inv()
             return
-        } else if (piece == Character.toLowerCase(piece)) {
+        } else if (piece == piece.toLowerCase()) {
             whites = whites and square.inv()
             blacks = blacks or square
         } else {
@@ -293,7 +271,7 @@ class Board {
             blacks = blacks and square.inv()
         }
 
-        when (Character.toLowerCase(piece)) {
+        when (piece.toLowerCase()) {
             'p' -> pawns = pawns or square
             'q' -> queens = queens or square
             'r' -> rooks = rooks or square
@@ -390,19 +368,19 @@ class Board {
             if (p != '/') {
                 var number = 0
                 try {
-                    number = Integer.parseInt(p.toString())
+                    number = p.toString().toInt()
                 } catch (ignored: Exception) {
                 }
 
                 for (k in 0..(if (number == 0) 1 else number) - 1) {
-                    tmpWhites = tmpWhites and j.inv() or if (number == 0 && p == Character.toUpperCase(p)) j else 0
-                    tmpBlacks = tmpBlacks and j.inv() or if (number == 0 && p == Character.toLowerCase(p)) j else 0
-                    tmpPawns = tmpPawns and j.inv() or if (Character.toUpperCase(p) == 'P') j else 0
-                    tmpRooks = tmpRooks and j.inv() or if (Character.toUpperCase(p) == 'R') j else 0
-                    tmpQueens = tmpQueens and j.inv() or if (Character.toUpperCase(p) == 'Q') j else 0
-                    tmpBishops = tmpBishops and j.inv() or if (Character.toUpperCase(p) == 'B') j else 0
-                    tmpKnights = tmpKnights and j.inv() or if (Character.toUpperCase(p) == 'N') j else 0
-                    tmpKings = tmpKings and j.inv() or if (Character.toUpperCase(p) == 'K') j else 0
+                    tmpWhites = tmpWhites and j.inv() or if (number == 0 && p == p.toUpperCase()) j else 0
+                    tmpBlacks = tmpBlacks and j.inv() or if (number == 0 && p == p.toLowerCase()) j else 0
+                    tmpPawns = tmpPawns and j.inv() or if (p.toUpperCase() == 'P') j else 0
+                    tmpRooks = tmpRooks and j.inv() or if (p.toUpperCase() == 'R') j else 0
+                    tmpQueens = tmpQueens and j.inv() or if (p.toUpperCase() == 'Q') j else 0
+                    tmpBishops = tmpBishops and j.inv() or if (p.toUpperCase() == 'B') j else 0
+                    tmpKnights = tmpKnights and j.inv() or if (p.toUpperCase() == 'N') j else 0
+                    tmpKings = tmpKings and j.inv() or if (p.toUpperCase() == 'K') j else 0
                     j = j ushr 1
                     if (j == 0L) {
                         break // security
@@ -496,14 +474,14 @@ class Board {
                 tmpFlags = tmpFlags or (FLAGS_PASSANT and BitboardUtils.algebraic2Square(passant))
                 if (tokens.size > 4) {
                     try {
-                        tmpFiftyMovesRule = Integer.parseInt(tokens[4])
+                        tmpFiftyMovesRule = tokens[4].toInt()
                     } catch (e: Exception) {
                         tmpFiftyMovesRule = 0
                     }
 
                     if (tokens.size > 5) {
                         val moveNumberString = tokens[5]
-                        val aux = Integer.parseInt(moveNumberString)
+                        val aux = moveNumberString.toInt()
                         fenMoveNumber = ((if (aux > 0) aux - 1 else aux) shl 1) + if (tmpFlags and FLAG_TURN == 0L) 0 else 1
                         if (fenMoveNumber < 0) {
                             fenMoveNumber = 0
@@ -547,7 +525,7 @@ class Board {
             initialFen = fen
             initialMoveNumber = fenMoveNumber
             moveNumber = fenMoveNumber
-            outBookMove = Integer.MAX_VALUE
+            outBookMove = Int.MAX_VALUE
 
             whites = tmpWhites
             blacks = tmpBlacks
@@ -576,7 +554,7 @@ class Board {
             saveHistory(0, false)
         } else {
             if (moveNumber < outBookMove) {
-                outBookMove = Integer.MAX_VALUE
+                outBookMove = Int.MAX_VALUE
             }
         }
     }
@@ -612,21 +590,22 @@ class Board {
      * TODO is it necessary??
      */
     private fun resetHistory() {
-        Arrays.fill(whitesHistory, 0)
-        Arrays.fill(blacksHistory, 0)
-        Arrays.fill(pawnsHistory, 0)
-        Arrays.fill(knightsHistory, 0)
-        Arrays.fill(bishopsHistory, 0)
-        Arrays.fill(rooksHistory, 0)
-        Arrays.fill(queensHistory, 0)
-        Arrays.fill(kingsHistory, 0)
-        Arrays.fill(flagsHistory, 0)
         for (i in 0..MAX_MOVES - 1) {
-            Arrays.fill(keyHistory[i], 0)
+            whitesHistory[i] = 0
+            blacksHistory[i] = 0
+            pawnsHistory[i] = 0
+            knightsHistory[i] = 0
+            bishopsHistory[i] = 0
+            rooksHistory[i] = 0
+            queensHistory[i] = 0
+            kingsHistory[i] = 0
+            flagsHistory[i] = 0
+            fiftyMovesRuleHistory[i] = 0
+            moveHistory[i] = 0
+            keyHistory[i][0] = 0
+            keyHistory[i][1] = 0
+            movesSan.clear()
         }
-        Arrays.fill(fiftyMovesRuleHistory, 0)
-        Arrays.fill(moveHistory, 0)
-        movesSan.clear()
     }
 
     private fun saveHistory(move: Int, fillSanInfo: Boolean) {
@@ -653,7 +632,7 @@ class Board {
      * Moves and also updates the board's zobrist key verify legality, if not
      * legal undo move and return false
      */
-    @JvmOverloads fun doMove(move: Int, verifyCheck: Boolean = true, fillSanInfo: Boolean = true): Boolean {
+    fun doMove(move: Int, verifyCheck: Boolean = true, fillSanInfo: Boolean = true): Boolean {
         if (move == Move.NONE) {
             return false
         }
