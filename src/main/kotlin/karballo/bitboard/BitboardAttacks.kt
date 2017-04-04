@@ -1,5 +1,6 @@
 package karballo.bitboard
 
+import System
 import karballo.Board
 import karballo.Color
 import karballo.log.Logger
@@ -199,7 +200,7 @@ open class BitboardAttacks internal constructor() {
     }
 
     companion object {
-        private val logger = Logger.getLogger(BitboardAttacks.javaClass.simpleName)
+        private val logger = Logger.getLogger("BitboardAttacks")
 
         /**
          * If disabled, does not use Magic Bitboards, improves loading speed in GWT
