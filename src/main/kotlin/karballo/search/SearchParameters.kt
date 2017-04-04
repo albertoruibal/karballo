@@ -1,7 +1,6 @@
 package karballo.search
 
 import karballo.log.Logger
-import java.util.*
 
 class SearchParameters {
 
@@ -64,7 +63,7 @@ class SearchParameters {
     fun calculateMoveTime(engineIsWhite: Boolean, startTime: Long, panicTime: Boolean): Long {
         manageTime = false
         if (isPonder || isInfinite || depth < Int.MAX_VALUE || nodes < Int.MAX_VALUE) {
-            return java.lang.Long.MAX_VALUE
+            return Long.MAX_VALUE
         }
         if (moveTime != Int.MAX_VALUE) {
             return startTime + moveTime
