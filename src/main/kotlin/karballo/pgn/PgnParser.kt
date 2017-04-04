@@ -15,7 +15,7 @@ object PgnParser {
     /**
      * Parses a 1-game pgn
      */
-    @JvmOverloads fun parsePgn(pgn: String?, parseBody: Boolean = true): Game? {
+    fun parsePgn(pgn: String?, parseBody: Boolean = true): Game? {
         if (pgn == null) {
             return null
         }
@@ -57,13 +57,13 @@ object PgnParser {
                             } else if ("black" == headerName) {
                                 game.black = headerValue
                             } else if ("whiteelo" == headerName) {
-                                game.whiteElo = Integer.valueOf(headerValue)
+                                game.whiteElo = headerValue.toInt()
                             } else if ("blackelo" == headerName) {
-                                game.blackElo = Integer.valueOf(headerValue)
+                                game.blackElo = headerValue.toInt()
                             } else if ("whitefideid" == headerName) {
-                                game.whiteFideId = Integer.valueOf(headerValue)
+                                game.whiteFideId = headerValue.toInt()
                             } else if ("blackfideid" == headerName) {
-                                game.blackFideId = Integer.valueOf(headerValue)
+                                game.blackFideId = headerValue.toInt()
                             } else if ("result" == headerName) {
                                 game.setResult(headerValue)
                             } else if ("fen" == headerName) {
