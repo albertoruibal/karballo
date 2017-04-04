@@ -18,13 +18,13 @@ class SearchParameters {
     // Moves to the next time control
     var movesToGo: Int = 0
     // Analize x plyes only
-    var depth = Integer.MAX_VALUE
+    var depth = Int.MAX_VALUE
     // Search only this number of nodes
-    var nodes = Integer.MAX_VALUE
+    var nodes = Int.MAX_VALUE
     // Search for mate in mate moves
     var mate: Int = 0
     // Search movetime milliseconds
-    var moveTime = Integer.MAX_VALUE
+    var moveTime = Int.MAX_VALUE
     // Think infinite
     var isInfinite: Boolean = false
     var isPonder: Boolean = false
@@ -63,10 +63,10 @@ class SearchParameters {
      */
     fun calculateMoveTime(engineIsWhite: Boolean, startTime: Long, panicTime: Boolean): Long {
         manageTime = false
-        if (isPonder || isInfinite || depth < Integer.MAX_VALUE || nodes < Integer.MAX_VALUE) {
+        if (isPonder || isInfinite || depth < Int.MAX_VALUE || nodes < Int.MAX_VALUE) {
             return java.lang.Long.MAX_VALUE
         }
-        if (moveTime != Integer.MAX_VALUE) {
+        if (moveTime != Int.MAX_VALUE) {
             return startTime + moveTime
         }
         manageTime = true
