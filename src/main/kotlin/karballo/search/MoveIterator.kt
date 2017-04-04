@@ -80,7 +80,7 @@ class MoveIterator(private var searchEngine: SearchEngine?, private val ai: Atta
         bbAttacks = null
     }
 
-    @JvmOverloads fun genMoves(ttMove: Int, movesToGenerate: Int = GENERATE_ALL) {
+    fun genMoves(ttMove: Int, movesToGenerate: Int = GENERATE_ALL) {
         this.ttMove = ttMove
         this.movesToGenerate = movesToGenerate
 
@@ -694,8 +694,8 @@ class MoveIterator(private var searchEngine: SearchEngine?, private val ai: Atta
         private val VICTIM_PIECE_VALUES = intArrayOf(0, 100, 325, 330, 500, 975, 10000)
         private val AGGRESSOR_PIECE_VALUES = intArrayOf(0, 10, 32, 33, 50, 97, 99)
         private val SCORE_PROMOTION_QUEEN = 975
-        private val SCORE_UNDERPROMOTION = Integer.MIN_VALUE + 1
-        private val SCORE_LOWEST = Integer.MIN_VALUE
+        private val SCORE_UNDERPROMOTION = Int.MIN_VALUE + 1
+        private val SCORE_LOWEST = Int.MIN_VALUE
 
         val SEE_NOT_CALCULATED = java.lang.Short.MAX_VALUE.toInt()
     }
