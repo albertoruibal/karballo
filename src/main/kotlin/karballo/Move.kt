@@ -189,7 +189,7 @@ object Move {
                     BitboardUtils.SQUARE_NAMES[BitboardUtils.square2Index(if (board.chess960) board.castlingRooks[if (turn) 1 else 3] else Board.CASTLING_KING_DESTINY_SQUARE[if (turn) 1 else 3])]
         } else {
             val promo = move[move.length - 1]
-            when (Character.toLowerCase(promo)) {
+            when (promo.toLowerCase()) {
                 'q' -> moveType = TYPE_PROMOTION_QUEEN
                 'n' -> moveType = TYPE_PROMOTION_KNIGHT
                 'b' -> moveType = TYPE_PROMOTION_BISHOP
