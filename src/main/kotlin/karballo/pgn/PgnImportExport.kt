@@ -25,7 +25,7 @@ object PgnImportExport {
         }
     }
 
-    @JvmOverloads fun getPgn(b: Board, whiteName: String?, blackName: String?, event: String? = null, site: String? = null, result: String? = null): String {
+    fun getPgn(b: Board, whiteName: String?, blackName: String?, event: String? = null, site: String? = null, result: String? = null): String {
         var whiteName = whiteName
         var blackName = blackName
         var event = event
