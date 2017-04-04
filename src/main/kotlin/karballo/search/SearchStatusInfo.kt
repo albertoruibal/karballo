@@ -73,7 +73,7 @@ class SearchStatusInfo {
 
     var depth: Int = 0
     var selDepth: Int = 0
-    var time = java.lang.Long.MIN_VALUE
+    var time = Long.MIN_VALUE
     var nodes: Long = 0
     var pv: String? = null
     var multiPv: Int = 0
@@ -139,7 +139,7 @@ class SearchStatusInfo {
             sb.append(" nodes ")
             sb.append(nodes)
         }
-        if (time != java.lang.Long.MIN_VALUE) {
+        if (time != Long.MIN_VALUE) {
             sb.append(" time ")
             sb.append(time)
         }

@@ -1057,8 +1057,8 @@ open class SearchEngine(var config: Config) : Runnable {
         private val NODE_NULL = 2
         private val PLY = 1
 
-        val HISTORY_MAX = java.lang.Short.MAX_VALUE - 1
-        val HISTORY_MIN = java.lang.Short.MIN_VALUE + 1
+        val HISTORY_MAX = Short.MAX_VALUE - 1
+        val HISTORY_MIN = Short.MIN_VALUE + 1
         // The bigger the treshold, the more moves are pruned
         private val HISTORY_PRUNING_TRESHOLD = intArrayOf(7000, 5994, 5087, 5724)
 
