@@ -90,7 +90,7 @@ class CompleteEvaluator : Evaluator() {
 
     var debug = false
     var debugPawns = false
-    lateinit var debugSB: StringBuffer
+    lateinit var debugSB: StringBuilder
 
     private val scaleFactor = intArrayOf(0)
 
@@ -111,7 +111,7 @@ class CompleteEvaluator : Evaluator() {
 
     override fun evaluate(b: Board, ai: AttacksInfo): Int {
         if (debug) {
-            debugSB = StringBuffer()
+            debugSB = StringBuilder()
             debugSB.append("\n")
             debugSB.append(b.toString())
             debugSB.append("\n")
