@@ -3,8 +3,6 @@ package karballo.book
 import karballo.Board
 import karballo.Move
 import karballo.log.Logger
-import java.io.BufferedInputStream
-import java.io.DataInputStream
 import java.util.*
 
 /**
@@ -110,9 +108,6 @@ class FileBook(private val bookName: String) : Book {
     }
 
     companion object {
-        /**
-         * Logger for this class
-         */
         private val logger = Logger.getLogger("FileBook")
     }
 }
