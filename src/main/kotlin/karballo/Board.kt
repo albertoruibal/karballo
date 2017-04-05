@@ -109,15 +109,6 @@ class Board {
     val turn: Boolean
         get() = flags and FLAG_TURN == 0L
 
-    fun canCastle(color: Int): Boolean {
-        return (flags and
-                if (flags and FLAG_TURN == 0L)
-                    FLAG_WHITE_KINGSIDE_CASTLING or FLAG_WHITE_QUEENSIDE_CASTLING
-                else
-                    FLAG_BLACK_KINGSIDE_CASTLING or FLAG_BLACK_QUEENSIDE_CASTLING
-                ) != 0L
-    }
-
     /**
      * Returns the castling destiny square, 0 it it cannot castle
      * Supports Chess960 (the rook origin square is the castling destiny sq for chess 960)

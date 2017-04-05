@@ -163,10 +163,10 @@ object Move {
      * @param move
      */
     fun getFromString(board: Board, move: String, verifyValidMove: Boolean): Int {
-        var move = move
-        if (NULL_STRING == move) {
+        var m = move
+        if (NULL_STRING == m) {
             return Move.NULL
-        } else if ("" == move || NONE_STRING == move) {
+        } else if ("" == m || NONE_STRING == m) {
             return Move.NONE
         }
 
@@ -174,21 +174,21 @@ object Move {
         val toIndex: Int
         var moveType = 0
         var pieceMoved = 0
-        val check = move.indexOf("+") > 0 || move.indexOf("#") > 0
+        val check = m.indexOf("+") > 0 || m.indexOf("#") > 0
         val mines = board.mines
         val turn = board.turn
 
         // Ignore checks, captures indicators...
-        move = move.replace("+", "").replace("x", "").replace("-", "").replace("=", "").replace("#", "").replace("?", "").replace("!", "").replace(" ", "").replace("0", "o").replace("O", "o")
+        m = m.replace("+", "").replace("x", "").replace("-", "").replace("=", "").replace("#", "").replace("?", "").replace("!", "").replace(" ", "").replace("0", "o").replace("O", "o")
 
-        if ("oo" == move) {
-            move = BitboardUtils.SQUARE_NAMES[BitboardUtils.square2Index(board.kings and mines)] + //
+        if ("oo" == m) {
+            m = BitboardUtils.SQUARE_NAMES[BitboardUtils.square2Index(board.kings and mines)] + //
                     BitboardUtils.SQUARE_NAMES[BitboardUtils.square2Index(if (board.chess960) board.castlingRooks[if (turn) 0 else 2] else Board.CASTLING_KING_DESTINY_SQUARE[if (turn) 0 else 2])]
-        } else if ("ooo" == move) {
-            move = BitboardUtils.SQUARE_NAMES[BitboardUtils.square2Index(board.kings and mines)] + //
+        } else if ("ooo" == m) {
+            m = BitboardUtils.SQUARE_NAMES[BitboardUtils.square2Index(board.kings and mines)] + //
                     BitboardUtils.SQUARE_NAMES[BitboardUtils.square2Index(if (board.chess960) board.castlingRooks[if (turn) 1 else 3] else Board.CASTLING_KING_DESTINY_SQUARE[if (turn) 1 else 3])]
         } else {
-            val promo = move[move.length - 1]
+            val promo = m[m.length - 1]
             when (promo.toLowerCase()) {
                 'q' -> moveType = TYPE_PROMOTION_QUEEN
                 'n' -> moveType = TYPE_PROMOTION_KNIGHT
@@ -198,19 +198,19 @@ object Move {
             }
             // If promotion, remove the last char
             if (moveType != 0) {
-                move = move.substring(0, move.length - 1)
+                m = m.substring(0, m.length - 1)
             }
         }
 
         // To is always the last 2 characters
-        toIndex = BitboardUtils.algebraic2Index(move.substring(move.length - 2, move.length))
+        toIndex = BitboardUtils.algebraic2Index(m.substring(m.length - 2, m.length))
         val to = 0x1L shl toIndex
         var from: Long = 0
 
         val bbAttacks = BitboardAttacks.getInstance()
 
         // Fills from with a mask of possible from values
-        when (move[0]) {
+        when (m[0]) {
             'N' -> from = board.knights and mines and bbAttacks.knight[toIndex]
             'K' -> from = board.kings and mines and bbAttacks.king[toIndex]
             'R' -> from = board.rooks and mines and bbAttacks.getRookAttacks(toIndex, board.all)
@@ -218,21 +218,21 @@ object Move {
             'Q' -> from = board.queens and mines and (bbAttacks.getRookAttacks(toIndex, board.all) or bbAttacks.getBishopAttacks(toIndex, board.all))
         }
         if (from != 0L) { // remove the piece char
-            move = move.substring(1)
+            m = m.substring(1)
         } else { // Pawn moves
-            if (move.length == 2) {
+            if (m.length == 2) {
                 if (turn) {
                     from = board.pawns and mines and (to.ushr(8) or if (to.ushr(8) and board.all == 0L) to.ushr(16) else 0)
                 } else {
                     from = board.pawns and mines and (to shl 8 or if (to shl 8 and board.all == 0L) to shl 16 else 0)
                 }
             }
-            if (move.length == 3) { // Pawn capture
+            if (m.length == 3) { // Pawn capture
                 from = board.pawns and mines and bbAttacks.pawn[if (turn) Color.B else Color.W][toIndex]
             }
         }
-        if (move.length == 3) { // now disambiaguate
-            val disambiguate = move[0]
+        if (m.length == 3) { // now disambiaguate
+            val disambiguate = m[0]
             val i = "abcdefgh".indexOf(disambiguate)
             if (i >= 0) {
                 from = from and BitboardUtils.FILE[i]
@@ -242,8 +242,8 @@ object Move {
                 from = from and BitboardUtils.RANK[j]
             }
         }
-        if (move.length == 4) { // was algebraic complete e2e4 (=UCI!)
-            from = BitboardUtils.algebraic2Square(move.substring(0, 2))
+        if (m.length == 4) { // was algebraic complete e2e4 (=UCI!)
+            from = BitboardUtils.algebraic2Square(m.substring(0, 2))
         }
         if (from == 0L || from and board.mines == 0L) {
             return NONE

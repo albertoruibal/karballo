@@ -163,11 +163,11 @@ object BitboardUtils {
     /**
      * Prints a BitBoard to standard output
      */
-    fun toString(b: Long): String {
+    fun toString(board: Long): String {
         val sb = StringBuilder()
         var i = Square.A8
         while (i != 0L) {
-            sb.append(if (b and i != 0L) "1 " else "0 ")
+            sb.append(if (board and i != 0L) "1 " else "0 ")
             if (i and b_r != 0L) {
                 sb.append("\n")
             }
@@ -179,19 +179,15 @@ object BitboardUtils {
     /**
      * Flips board vertically
      * https://chessprogramming.wikispaces.com/Flipping+Mirroring+and+Rotating
-
-     * @param in
-     * *
-     * @return
      */
-    fun flipVertical(`in`: Long): Long {
-        var `in` = `in`
+    fun flipVertical(board: Long): Long {
+        var b = board
         val k1 = 0x00FF00FF00FF00FFL
         val k2 = 0x0000FFFF0000FFFFL
-        `in` = `in`.ushr(8) and k1 or (`in` and k1 shl 8)
-        `in` = `in`.ushr(16) and k2 or (`in` and k2 shl 16)
-        `in` = `in`.ushr(32) or (`in` shl 32)
-        return `in`
+        b = b.ushr(8) and k1 or (b and k1 shl 8)
+        b = b.ushr(16) and k2 or (b and k2 shl 16)
+        b = b.ushr(32) or (b shl 32)
+        return b
     }
 
     fun flipHorizontalIndex(index: Int): Int {
@@ -202,26 +198,26 @@ object BitboardUtils {
      * Counts the number of bits of one long
      * http://chessprogramming.wikispaces.com/Population+Count
 
-     * @param x
+     * @param board
      * *
      * @return
      */
-    fun popCount(x: Long): Int {
-        var x = x
-        if (x == 0L) {
+    fun popCount(board: Long): Int {
+        var b = board
+        if (b == 0L) {
             return 0
         }
         val k1 = 0x5555555555555555L
         val k2 = 0x3333333333333333L
         val k4 = 0x0f0f0f0f0f0f0f0fL
         val kf = 0x0101010101010101L
-        x = x - (x shr 1 and k1) // put count of each 2 bits into those 2 bits
-        x = (x and k2) + (x shr 2 and k2) // put count of each 4 bits into those 4
+        b = b - (b shr 1 and k1) // put count of each 2 bits into those 2 bits
+        b = (b and k2) + (b shr 2 and k2) // put count of each 4 bits into those 4
         // bits
-        x = x + (x shr 4) and k4 // put count of each 8 bits into those 8 bits
-        x = x * kf shr 56 // returns 8 most significant bits of x + (x<<8) +
-        // (x<<16) + (x<<24) + ...
-        return x.toInt()
+        b = b + (b shr 4) and k4 // put count of each 8 bits into those 8 bits
+        b = b * kf shr 56 // returns 8 most significant bits of board + (board<<8) +
+        // (board<<16) + (board<<24) + ...
+        return b.toInt()
     }
 
     /**
@@ -310,14 +306,14 @@ object BitboardUtils {
     }
 
     fun msb(board: Long): Long {
-        var board = board
-        board = board or board.ushr(32)
-        board = board or board.ushr(16)
-        board = board or board.ushr(8)
-        board = board or board.ushr(4)
-        board = board or board.ushr(2)
-        board = board or board.ushr(1)
-        return if (board == 0L) 0 else board.ushr(1) + 1
+        var b = board
+        b = b or b.ushr(32)
+        b = b or b.ushr(16)
+        b = b or b.ushr(8)
+        b = b or b.ushr(4)
+        b = b or b.ushr(2)
+        b = b or b.ushr(1)
+        return if (b == 0L) 0 else b.ushr(1) + 1
     }
 
     /**

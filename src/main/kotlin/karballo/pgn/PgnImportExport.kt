@@ -26,46 +26,46 @@ object PgnImportExport {
     }
 
     fun getPgn(b: Board, whiteName: String?, blackName: String?, event: String? = null, site: String? = null, result: String? = null): String {
-        var whiteName = whiteName
-        var blackName = blackName
-        var event = event
-        var site = site
-        var result = result
+        var whiteNameVar = whiteName
+        var blackNameVar = blackName
+        var eventVar = event
+        var siteVar = site
+        var resultVar = result
 
         val sb = StringBuilder()
 
-        if (whiteName == null || "" == whiteName) {
-            whiteName = "?"
+        if (whiteNameVar == null || "" == whiteNameVar) {
+            whiteNameVar = "?"
         }
-        if (blackName == null || "" == blackName) {
-            blackName = "?"
-        }
-
-        if (event == null) {
-            event = "Chess Game"
-        }
-        if (site == null) {
-            site = "-"
+        if (blackNameVar == null || "" == blackNameVar) {
+            blackNameVar = "?"
         }
 
-        sb.append("[Event \"").append(event).append("\"]\n")
-        sb.append("[Site \"").append(site).append("\"]\n")
+        if (eventVar == null) {
+            eventVar = "Chess Game"
+        }
+        if (siteVar == null) {
+            siteVar = "-"
+        }
+
+        sb.append("[Event \"").append(eventVar).append("\"]\n")
+        sb.append("[Site \"").append(siteVar).append("\"]\n")
 
         val d = Date()
         // For GWT we use deprecated methods
         sb.append("[Date \"").append(d.year + 1900).append(".").append(d.month + 1).append(".").append(d.date).append("\"]\n")
         sb.append("[Round \"?\"]\n")
-        sb.append("[White \"").append(whiteName).append("\"]\n")
-        sb.append("[Black \"").append(blackName).append("\"]\n")
-        if (result == null) {
-            result = "*"
+        sb.append("[White \"").append(whiteNameVar).append("\"]\n")
+        sb.append("[Black \"").append(blackNameVar).append("\"]\n")
+        if (resultVar == null) {
+            resultVar = "*"
             when (b.isEndGame) {
-                1 -> result = "1-0"
-                -1 -> result = "0-1"
-                99 -> result = "1/2-1/2"
+                1 -> resultVar = "1-0"
+                -1 -> resultVar = "0-1"
+                99 -> resultVar = "1/2-1/2"
             }
         }
-        sb.append("[Result \"").append(result).append("\"]\n")
+        sb.append("[Result \"").append(resultVar).append("\"]\n")
         if (Board.FEN_START_POSITION != b.initialFen) {
             sb.append("[FEN \"").append(b.initialFen).append("\"]\n")
         }
@@ -84,7 +84,7 @@ object PgnImportExport {
         }
 
         line.append(" ")
-        line.append(result)
+        line.append(resultVar)
         // Cut line in a limit of 80 characters
         val tokens = line.toString().split("[ \\t\\n\\x0B\\f\\r]+".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
 

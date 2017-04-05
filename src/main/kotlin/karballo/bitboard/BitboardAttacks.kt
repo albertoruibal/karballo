@@ -16,28 +16,28 @@ open class BitboardAttacks internal constructor() {
     var pawn: Array<LongArray>
 
     internal fun squareAttackedAux(square: Long, shift: Int, border: Long): Long {
-        var square = square
-        if (square and border == 0L) {
+        var s = square
+        if (s and border == 0L) {
             if (shift > 0) {
-                square = square shl shift
+                s = s shl shift
             } else {
-                square = square ushr (-shift)
+                s = s ushr (-shift)
             }
-            return square
+            return s
         }
         return 0
     }
 
     internal fun squareAttackedAuxSlider(square: Long, shift: Int, border: Long): Long {
-        var square = square
+        var s = square
         var ret: Long = 0
-        while (square and border == 0L) {
+        while (s and border == 0L) {
             if (shift > 0) {
-                square = square shl shift
+                s = s shl shift
             } else {
-                square = square ushr (-shift)
+                s = s ushr (-shift)
             }
-            ret = ret or square
+            ret = ret or s
         }
         return ret
     }
@@ -103,14 +103,14 @@ open class BitboardAttacks internal constructor() {
     }
 
     fun areSquaresAttacked(board: Board, squares: Long, white: Boolean): Boolean {
-        var squares = squares
-        while (squares != 0L) {
-            val square = BitboardUtils.lsb(squares)
+        var s = squares
+        while (s != 0L) {
+            val square = BitboardUtils.lsb(s)
             val attacked = isIndexAttacked(board, BitboardUtils.square2Index(square), white)
             if (attacked) {
                 return true
             }
-            squares = squares xor square
+            s = s xor square
         }
         return false
     }
@@ -181,17 +181,17 @@ open class BitboardAttacks internal constructor() {
      * Attacks for sliding pieces
      */
     private fun checkSquareAttackedAux(square: Long, all: Long, shift: Int, border: Long): Long {
-        var square = square
+        var s = square
         var ret: Long = 0
-        while (square and border == 0L) {
+        while (s and border == 0L) {
             if (shift > 0) {
-                square = square shl shift
+                s = s shl shift
             } else {
-                square = square ushr (-shift)
+                s = s ushr (-shift)
             }
-            ret = ret or square
+            ret = ret or s
             // If we collide with other piece
-            if (square and all != 0L) {
+            if (s and all != 0L) {
                 break
             }
         }

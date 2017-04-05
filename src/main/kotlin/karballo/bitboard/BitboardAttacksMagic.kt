@@ -59,13 +59,13 @@ class BitboardAttacksMagic : BitboardAttacks() {
      * the mask bytes number index goes from 0 to 2^bits
      */
     private fun generatePieces(index: Int, bits: Int, mask: Long): Long {
-        var mask = mask
+        var m = mask
         var i: Int = 0
         var lsb: Long
         var result = 0L
         while (i < bits) {
-            lsb = mask and -mask
-            mask = mask xor lsb // Deactivates lsb bit of the mask to get next bit next time
+            lsb = m and -m
+            m = m xor lsb // Deactivates lsb bit of the mask to get next bit next time
             if (index and (1 shl i) != 0)
                 result = result or lsb // if bit is set to 1
             i++
@@ -74,16 +74,16 @@ class BitboardAttacksMagic : BitboardAttacks() {
     }
 
     private fun squareAttackedAuxSliderMask(square: Long, shift: Int, border: Long): Long {
-        var square = square
+        var s = square
         var ret: Long = 0
-        while (square and border == 0L) {
+        while (s and border == 0L) {
             if (shift > 0) {
-                square = square shl shift
+                s = s shl shift
             } else {
-                square = square ushr (-shift)
+                s = s ushr (-shift)
             }
-            if (square and border == 0L) {
-                ret = ret or square
+            if (s and border == 0L) {
+                ret = ret or s
             }
         }
         return ret

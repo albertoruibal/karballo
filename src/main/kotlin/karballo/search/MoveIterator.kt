@@ -230,8 +230,6 @@ class MoveIterator(private var searchEngine: SearchEngine?, private val ai: Atta
                 }
             }
         }
-
-        return Move.NONE
     }
 
     private fun pickMoveFromArray(arrayLength: Int, arrayMoves: IntArray, arrayScores: IntArray, arraySee: IntArray): Int {
@@ -425,22 +423,22 @@ class MoveIterator(private var searchEngine: SearchEngine?, private val ai: Atta
      * Generates moves from an attack mask
      */
     private fun generateMovesFromAttacks(pieceMoved: Int, fromIndex: Int, from: Long, attacks: Long, capture: Boolean) {
-        var attacks = attacks
-        while (attacks != 0L) {
-            val to = if (turn) BitboardUtils.msb(attacks) else BitboardUtils.lsb(attacks)
+        var a = attacks
+        while (a != 0L) {
+            val to = if (turn) BitboardUtils.msb(a) else BitboardUtils.lsb(a)
             addMove(pieceMoved, fromIndex, from, to, capture, 0)
-            attacks = attacks xor to
+            a = a xor to
         }
     }
 
     private fun generatePawnCapturesOrGoodPromos(fromIndex: Int, from: Long, attacks: Long, passant: Long) {
-        var attacks = attacks
+        var a = attacks
         if (ai.pinnedPieces and from != 0L) {
-            attacks = attacks and ai.pinnedMobility[fromIndex] // Be careful with pawn advance moves, the pawn may be pinned
+            a = a and ai.pinnedMobility[fromIndex] // Be careful with pawn advance moves, the pawn may be pinned
         }
 
-        while (attacks != 0L) {
-            val to = if (turn) BitboardUtils.msb(attacks) else BitboardUtils.lsb(attacks)
+        while (a != 0L) {
+            val to = if (turn) BitboardUtils.msb(a) else BitboardUtils.lsb(a)
             if (to and passant != 0L) {
                 addMove(Piece.PAWN, fromIndex, from, to, true, Move.TYPE_PASSANT)
             } else {
@@ -457,18 +455,18 @@ class MoveIterator(private var searchEngine: SearchEngine?, private val ai: Atta
                     addMove(Piece.PAWN, fromIndex, from, to, true, 0)
                 }
             }
-            attacks = attacks xor to
+            a = a xor to
         }
     }
 
     private fun generatePawnNonCapturesAndBadPromos(fromIndex: Int, from: Long, attacks: Long) {
-        var attacks = attacks
+        var a = attacks
         if (ai.pinnedPieces and from != 0L) {
-            attacks = attacks and ai.pinnedMobility[fromIndex] // Be careful with pawn advance moves, the pawn may be pinned
+            a = a and ai.pinnedMobility[fromIndex] // Be careful with pawn advance moves, the pawn may be pinned
         }
 
-        while (attacks != 0L) {
-            val to = if (turn) BitboardUtils.msb(attacks) else BitboardUtils.lsb(attacks)
+        while (a != 0L) {
+            val to = if (turn) BitboardUtils.msb(a) else BitboardUtils.lsb(a)
             if (to and (BitboardUtils.b_u or BitboardUtils.b_d) != 0L) {
                 addMove(Piece.PAWN, fromIndex, from, to, false, Move.TYPE_PROMOTION_KNIGHT)
                 addMove(Piece.PAWN, fromIndex, from, to, false, Move.TYPE_PROMOTION_ROOK)
@@ -476,7 +474,7 @@ class MoveIterator(private var searchEngine: SearchEngine?, private val ai: Atta
             } else {
                 addMove(Piece.PAWN, fromIndex, from, to, false, 0)
             }
-            attacks = attacks xor to
+            a = a xor to
         }
     }
 

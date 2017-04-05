@@ -94,24 +94,24 @@ open class MagicMoveGenerator : MoveGenerator {
      * Generates moves from an attack mask
      */
     private fun generateMovesFromAttacks(pieceMoved: Int, fromIndex: Int, attacks: Long) {
-        var attacks = attacks
-        while (attacks != 0L) {
-            val to = BitboardUtils.lsb(attacks)
+        var a = attacks
+        while (a != 0L) {
+            val to = BitboardUtils.lsb(a)
             addMoves(pieceMoved, fromIndex, BitboardUtils.square2Index(to), to and others != 0L, 0)
-            attacks = attacks xor to
+            a = a xor to
         }
     }
 
     private fun generatePawnCapturesFromAttacks(fromIndex: Int, attacks: Long, passant: Long) {
-        var attacks = attacks
-        while (attacks != 0L) {
-            val to = BitboardUtils.lsb(attacks)
+        var a = attacks
+        while (a != 0L) {
+            val to = BitboardUtils.lsb(a)
             if (to and others != 0L) {
                 addMoves(Piece.PAWN, fromIndex, BitboardUtils.square2Index(to), true, 0)
             } else if (to and passant != 0L) {
                 addMoves(Piece.PAWN, fromIndex, BitboardUtils.square2Index(to), true, Move.TYPE_PASSANT)
             }
-            attacks = attacks xor to
+            a = a xor to
         }
     }
 

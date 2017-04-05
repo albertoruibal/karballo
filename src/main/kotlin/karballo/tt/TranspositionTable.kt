@@ -99,18 +99,18 @@ class TranspositionTable(sizeMb: Int) {
         get() = getGeneration() == generation
 
     operator fun set(board: Board, nodeType: Int, distanceToInitialPly: Int, depthAnalyzed: Int, bestMove: Int, score: Int, eval: Int, exclusion: Boolean) {
-        var bestMove = bestMove
-        var score = score
+        var bestMoveVar = bestMove
+        var scoreVar = score
         val key2 = board.key2
         val startIndex = (if (exclusion) board.exclusionKey else board.getKey()).ushr(64 - sizeBits).toInt()
         var replaceIndex = startIndex
         var replaceImportance = Int.MAX_VALUE // A higher value, so the first entry will be the default
 
         // Fix mate score with the real distance to mate from the current PLY, not from the initial PLY
-        if (score >= SearchEngine.VALUE_IS_MATE) {
-            score += distanceToInitialPly
-        } else if (score <= -SearchEngine.VALUE_IS_MATE) {
-            score -= distanceToInitialPly
+        if (scoreVar >= SearchEngine.VALUE_IS_MATE) {
+            scoreVar += distanceToInitialPly
+        } else if (scoreVar <= -SearchEngine.VALUE_IS_MATE) {
+            scoreVar -= distanceToInitialPly
         }
 
 //        assert(score >= -Evaluator.MATE && score <= Evaluator.MATE) { "Fixed TT score is outside limits" }
@@ -126,8 +126,8 @@ class TranspositionTable(sizeMb: Int) {
                 break
             } else if (keys[i] == key2) { // Replace the same position
                 replaceIndex = i
-                if (bestMove == Move.NONE) { // Keep previous best move
-                    bestMove = bestMove
+                if (bestMoveVar == Move.NONE) { // Keep previous best move
+                    bestMoveVar = bestMoveVar
                 }
                 break
             }
@@ -146,7 +146,7 @@ class TranspositionTable(sizeMb: Int) {
         }
 
         keys[replaceIndex] = key2
-        info = (bestMove and 0x1fffff).toLong() or (nodeType and 0xf shl 21).toLong() or ((generation and 0xff).toLong() shl 32) or ((depthAnalyzed and 0xff).toLong() shl 40) or ((score and 0xffff).toLong() shl 48)
+        info = (bestMoveVar and 0x1fffff).toLong() or (nodeType and 0xf shl 21).toLong() or ((generation and 0xff).toLong() shl 32) or ((depthAnalyzed and 0xff).toLong() shl 40) or ((scoreVar and 0xffff).toLong() shl 48)
 
         infos[replaceIndex] = info
         evals[replaceIndex] = eval.toShort()

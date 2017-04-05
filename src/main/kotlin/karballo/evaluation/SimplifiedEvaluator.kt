@@ -11,7 +11,7 @@ import karballo.bitboard.AttacksInfo
  */
 class SimplifiedEvaluator : Evaluator() {
 
-    override fun evaluate(b: Board, attacksInfo: AttacksInfo): Int {
+    override fun evaluate(b: Board, ai: AttacksInfo): Int {
         val all = b.all
 
         val materialValue = intArrayOf(0, 0)
