@@ -1,7 +1,5 @@
 package karballo.pgn
 
-import java.util.*
-
 class GameNodeVariation : GameNode() {
 
     var variation = ArrayList<GameNode>()
