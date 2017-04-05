@@ -197,10 +197,6 @@ object BitboardUtils {
     /**
      * Counts the number of bits of one long
      * http://chessprogramming.wikispaces.com/Population+Count
-
-     * @param board
-     * *
-     * @return
      */
     fun popCount(board: Long): Int {
         var b = board
@@ -221,12 +217,7 @@ object BitboardUtils {
     }
 
     /**
-     * Convert a bitboard square to algebraic notation Number depends of rotated
-     * board.
-
-     * @param square
-     * *
-     * @return
+     * Convert a bitboard square to algebraic notation number depends of rotated board
      */
     fun square2Algebraic(square: Long): String {
         return SQUARE_NAMES[square2Index(square)]
@@ -258,10 +249,6 @@ object BitboardUtils {
 
     /**
      * Gets the file (0..7) for (a..h) of the square
-
-     * @param square
-     * *
-     * @return
      */
     fun getFile(square: Long): Int {
         for (file in 0..7) {
