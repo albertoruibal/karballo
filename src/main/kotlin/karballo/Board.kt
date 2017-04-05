@@ -590,22 +590,21 @@ class Board {
      * TODO is it necessary??
      */
     private fun resetHistory() {
+        Arrays.fill(whitesHistory, 0)
+        Arrays.fill(blacksHistory, 0)
+        Arrays.fill(pawnsHistory, 0)
+        Arrays.fill(knightsHistory, 0)
+        Arrays.fill(bishopsHistory, 0)
+        Arrays.fill(rooksHistory, 0)
+        Arrays.fill(queensHistory, 0)
+        Arrays.fill(kingsHistory, 0)
+        Arrays.fill(flagsHistory, 0)
+        Arrays.fill(fiftyMovesRuleHistory, 0)
+        Arrays.fill(moveHistory, 0)
         for (i in 0..MAX_MOVES - 1) {
-            whitesHistory[i] = 0
-            blacksHistory[i] = 0
-            pawnsHistory[i] = 0
-            knightsHistory[i] = 0
-            bishopsHistory[i] = 0
-            rooksHistory[i] = 0
-            queensHistory[i] = 0
-            kingsHistory[i] = 0
-            flagsHistory[i] = 0
-            fiftyMovesRuleHistory[i] = 0
-            moveHistory[i] = 0
-            keyHistory[i][0] = 0
-            keyHistory[i][1] = 0
-            movesSan.clear()
+            Arrays.fill(keyHistory[i], 0)
         }
+        movesSan.clear()
     }
 
     private fun saveHistory(move: Int, fillSanInfo: Boolean) {

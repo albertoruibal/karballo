@@ -5,6 +5,7 @@ import karballo.Move
 import karballo.bitboard.BitboardUtils
 import karballo.log.Logger
 import karballo.search.SearchEngine
+import java.util.*
 
 /**
  * Transposition table using two keys and multiprobe
@@ -42,9 +43,7 @@ class TranspositionTable(sizeMb: Int) {
 
     fun clear() {
         entriesOccupied = 0
-        for (i in 0..keys.size - 1) {
-            keys[i] = 0
-        }
+        Arrays.fill(keys, 0)
     }
 
     fun search(board: Board, distanceToInitialPly: Int, exclusion: Boolean): Boolean {

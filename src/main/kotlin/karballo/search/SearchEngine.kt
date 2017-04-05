@@ -67,7 +67,7 @@ open class SearchEngine(var config: Config) : Runnable {
     private var nullCutNodes: Long = 0
     private var nullAllNodes: Long = 0
 
-    private val random: Random = Random()
+    private val random = Random()
 
     private val logMatrix: Array<FloatArray>
 
@@ -196,7 +196,6 @@ open class SearchEngine(var config: Config) : Runnable {
             node.staticEval
     }
 
-    @Throws(SearchFinishedException::class)
     fun quiescentSearch(qsdepth: Int, alphaIn: Int, betaIn: Int): Int {
         var alpha = alphaIn
         var beta = betaIn
@@ -291,7 +290,7 @@ open class SearchEngine(var config: Config) : Runnable {
             }
 
             board.doMove(node.move, false, false)
-            assert(board.check == Move.isCheck(node.move)) { "Check flag not generated properly" }
+            //assert(board.check == Move.isCheck(node.move)) { "Check flag not generated properly" }
 
             val score = -quiescentSearch(qsdepth + 1, -beta, -bestScore)
             board.undoMove()
@@ -320,11 +319,10 @@ open class SearchEngine(var config: Config) : Runnable {
     /**
      * Search Root, PV and null window
      */
-    @Throws(SearchFinishedException::class)
     fun search(nodeType: Int, depthRemaining: Int, alphaIn: Int, betaIn: Int, allowPrePruning: Boolean, excludedMove: Int): Int {
         var alpha = alphaIn
         var beta = betaIn
-        assert(depthRemaining > 0) { "Wrong depthRemaining" }
+        //assert(depthRemaining > 0) { "Wrong depthRemaining" }
 
         if (nodeType != NODE_ROOT && bestMove != Move.NONE && (System.currentTimeMillis() > thinkToTime || nodeCount > thinkToNodes)) {
             throw SearchFinishedException()
@@ -613,7 +611,7 @@ open class SearchEngine(var config: Config) : Runnable {
             }
 
             board.doMove(node.move, false, false)
-            assert(board.check == Move.isCheck(node.move)) { "Check flag not generated properly" }
+            //assert(board.check == Move.isCheck(node.move)) { "Check flag not generated properly" }
 
             val lowBound = if (alpha > bestScore) alpha else bestScore
             if ((nodeType == NODE_PV || nodeType == NODE_ROOT) && moveCount == 1) {
@@ -786,7 +784,6 @@ open class SearchEngine(var config: Config) : Runnable {
         }
     }
 
-    @Throws(SearchFinishedException::class)
     private fun prepareRun() {
         logger.debug("Board\n" + board)
 
@@ -822,7 +819,6 @@ open class SearchEngine(var config: Config) : Runnable {
         aspWindows = ASPIRATION_WINDOW_SIZES
     }
 
-    @Throws(SearchFinishedException::class)
     private fun runStepped() {
         selDepth = 0
         var failHighCount = 0

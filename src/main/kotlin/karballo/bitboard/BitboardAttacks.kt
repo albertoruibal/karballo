@@ -1,6 +1,5 @@
 package karballo.bitboard
 
-import System
 import karballo.Board
 import karballo.Color
 import karballo.log.Logger

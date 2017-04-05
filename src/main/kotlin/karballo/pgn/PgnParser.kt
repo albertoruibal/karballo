@@ -1,8 +1,5 @@
 package karballo.pgn
 
-import karballo.log.Logger
-import java.util.*
-
 /**
  * Pgn parser wit variations support
 
@@ -10,8 +7,6 @@ import java.util.*
  */
 
 object PgnParser {
-    private val logger = Logger.getLogger("Pgn")
-
     /**
      * Parses a 1-game pgn
      */
@@ -20,14 +15,14 @@ object PgnParser {
             return null
         }
         val game = Game()
-        val variations = LinkedList<GameNodeVariation>()
+        val variations = ArrayList<GameNodeVariation>()
         val principalVariation = GameNodeVariation()
         var currentVariation = principalVariation
         variations.add(principalVariation)
 
         var lastMoveNumber: String? = null
         var lastMove: GameNodeMove? = null
-        val sb = StringBuilder()
+        var sb = StringBuilder()
         var parsingHeaders = true
         var parsingComment = false
 
@@ -82,7 +77,7 @@ object PgnParser {
                             if (parsingComment) {
                                 if (c == '}') {
                                     currentVariation.variation.add(GameNodeComment(sb.toString()))
-                                    sb.setLength(0)
+                                    sb = StringBuilder() //sb.setLength(0)
                                     parsingComment = false
                                 } else {
                                     sb.append(c)
@@ -108,7 +103,7 @@ object PgnParser {
 
                                 if (finishLastEntity && sb.isNotEmpty()) {
                                     var s = sb.toString()
-                                    sb.setLength(0)
+                                    sb = StringBuilder() //sb.setLength(0)
 
                                     if ("1-0" == s
                                             || "0-1" == s
@@ -164,8 +159,9 @@ object PgnParser {
                                     currentVariation = GameNodeVariation()
                                     variations.add(currentVariation)
                                 } else if (c == ')') {
-                                    val lastVariation = variations.removeLast()
-                                    currentVariation = variations.last
+                                    val lastVariation = variations[variations.size - 1]
+                                    variations.removeAt(variations.size - 1)
+                                    currentVariation = variations[variations.size - 1]
                                     currentVariation.variation.add(lastVariation)
                                 }
                             }
@@ -178,7 +174,6 @@ object PgnParser {
             }
         } catch (e: Exception) {
             println("ERROR parsing pgn: " + pgn)
-            e.printStackTrace()
         }
 
         game.pv = principalVariation

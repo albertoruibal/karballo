@@ -3,6 +3,8 @@ package karballo.book
 import karballo.Board
 import karballo.Move
 import karballo.log.Logger
+import java.io.BufferedInputStream
+import java.io.DataInputStream
 import java.util.*
 
 /**
