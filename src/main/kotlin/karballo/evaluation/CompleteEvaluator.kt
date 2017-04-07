@@ -276,7 +276,6 @@ class CompleteEvaluator : Evaluator() {
                                 && !candidate
                                 && myPawnsBesideAndBehindAdjacent == 0L
                                 && pieceAttacks and otherPawns == 0L // No backwards if it can capture
-
                                 && BitboardUtils.RANK_AND_BACKWARD[us][if (isWhite) BitboardUtils.getRankLsb(myPawnsAheadAdjacent) else BitboardUtils.getRankMsb(myPawnsAheadAdjacent)] and
                                 routeToPromotion and (b.pawns or ai.pawnAttacks[them]) != 0L // Other pawns stopping it from advance, opposing or capturing it before reaching my pawns
 
@@ -340,7 +339,9 @@ class CompleteEvaluator : Evaluator() {
                         // Backfile only to the first piece found
                         val backFile = bbAttacks.getRookAttacks(index, all) and pawnFile and BitboardUtils.RANKS_BACKWARD[us][rank]
                         // If it has a rook or queen behind consider all the route to promotion attacked or defended
-                        val attackedAndNotDefendedRoute = routeToPromotion and ai.attackedSquares[them] or if (backFile and (b.rooks or b.queens) and others != 0L) routeToPromotion else 0L and (routeToPromotion and ai.attackedSquares[us] or if (backFile and (b.rooks or b.queens) and mines != 0L) routeToPromotion else 0L).inv()
+                        val attackedAndNotDefendedRoute =
+                                ((routeToPromotion and ai.attackedSquares[them]) or if (backFile and (b.rooks or b.queens) and others != 0L) routeToPromotion else 0L) and
+                                        ((routeToPromotion and ai.attackedSquares[us]) or if (backFile and (b.rooks or b.queens) and mines != 0L) routeToPromotion else 0L).inv()
                         val connected = bbAttacks.king[index] and adjacentFiles and myPawns != 0L
                         val outside = otherPawns != 0L && (square and BitboardUtils.FILES_LEFT[3] != 0L && b.pawns and BitboardUtils.FILES_LEFT[file] == 0L || square and BitboardUtils.FILES_RIGHT[4] != 0L && b.pawns and BitboardUtils.FILES_RIGHT[file] == 0L)
                         val mobile = pushSquare and (all or attackedAndNotDefendedRoute) == 0L
