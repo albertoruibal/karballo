@@ -13,7 +13,6 @@ import java.util.*
  * @author rui
  */
 class FileBook(private val bookName: String) : Book {
-
     internal var moves: MutableList<Int> = ArrayList()
     internal var weights: MutableList<Int> = ArrayList()
     internal var totalWeight: Long = 0
