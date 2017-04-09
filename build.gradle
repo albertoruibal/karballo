@@ -25,6 +25,14 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
 
+task fastTest(type: Test) {
+    ignoreFailures = true
+
+    useJUnit {
+        excludeCategories 'karballo.SlowTest'
+    }
+}
+
 task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
     doFirst {
         configurations.compile.each { println it.name }
@@ -40,7 +48,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
     allowaccessmodification
     dontskipnonpubliclibraryclassmembers
     target '1.8'
-    keep 'public class karballo.uci.Uci { *; }'
+    keep 'public class karballo.uci.UciKt { *; }'
     keepclassmembers 'class * extends java.lang.Enum {<fields>; public static **[] values(); public static ** valueOf(java.lang.String); }'
 
     doLast {
@@ -49,5 +57,5 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
 }
 
 jar {
-    manifest.attributes("Main-Class": "karballo.uci.Uci")
+    manifest.attributes("Main-Class": "karballo.uci.UciKt")
 }

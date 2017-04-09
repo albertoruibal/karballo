@@ -90,7 +90,6 @@ class Uci : SearchObserver {
                         Thread.sleep(10)
                     } catch (e: Exception) {
                     }
-
                 }
             }
             println("readyok")
@@ -222,12 +221,11 @@ class Uci : SearchObserver {
     }
 
     companion object {
-        internal val NAME = "Carballo Chess Engine v1.8"
-        internal val AUTHOR = "Alberto Alonso Ruibal"
-
-        @JvmStatic fun main(args: Array<String>) {
-            val uci = Uci()
-            uci.loop()
-        }
+        val NAME = "Carballo Chess Engine v1.8"
+        val AUTHOR = "Alberto Alonso Ruibal"
     }
+}
+
+fun main(args: Array<String>) {
+    Uci().loop()
 }

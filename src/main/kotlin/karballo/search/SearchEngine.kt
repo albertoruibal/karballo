@@ -17,7 +17,6 @@ import java.util.*
  * @author Alberto Alonso Ruibal
  */
 open class SearchEngine(var config: Config) : Runnable {
-
     var debug = false
 
     internal var searchLock = Any()
@@ -675,7 +674,7 @@ open class SearchEngine(var config: Config) : Runnable {
             if (score >= beta) {
                 break
             } else if (score <= alpha) {
-                historyBad(node, node.move, depthRemaining)
+                historyBad(node.move, depthRemaining)
             }
         }
 
@@ -745,14 +744,17 @@ open class SearchEngine(var config: Config) : Runnable {
      * It searches for the best movement
      */
     open fun go(searchParameters: SearchParameters) {
+        var shouldStart = false
         synchronized(startStopSearchLock) {
-            if (!initialized || isSearching) {
-                return
+            if (initialized && !isSearching) {
+                isSearching = true
+                shouldStart = true
+                setInitialSearchParameters(searchParameters)
             }
-            isSearching = true
-            setInitialSearchParameters(searchParameters)
         }
-        run()
+        if (shouldStart) {
+            run()
+        }
     }
 
     private fun searchStats() {
@@ -1022,7 +1024,7 @@ open class SearchEngine(var config: Config) : Runnable {
         history[pieceMoved][toIndex] = (v + ((HISTORY_MAX - v) * depth shr 8)).toShort()
     }
 
-    fun historyBad(node: Node, move: Int, depth: Int) {
+    fun historyBad(move: Int, depth: Int) {
         if (move == Move.NONE || Move.isTactical(move)) {
             return
         }
