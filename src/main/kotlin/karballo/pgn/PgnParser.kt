@@ -137,7 +137,7 @@ object PgnParser {
                                         }
 
                                         if (s.isNotEmpty()) {
-                                            lastMove = GameNodeMove(lastMoveNumber!!, s, annotation!!)
+                                            lastMove = GameNodeMove(lastMoveNumber, s, annotation)
                                             currentVariation.variation.add(lastMove)
                                             lastMoveNumber = null
                                         }
@@ -173,6 +173,7 @@ object PgnParser {
                 }
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             println("ERROR parsing pgn: " + pgn)
         }
 

@@ -2,7 +2,6 @@ package karballo
 
 import karballo.pgn.PgnFile
 import karballo.pgn.PgnImportExport
-import karballo.search.SearchEngine
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -11,32 +10,32 @@ class DrawDetectionTest {
 
     @Test
     fun test3FoldDraw() {
-        val se = SearchEngine(Config())
+        val b = Board()
 
         val `is` = this.javaClass.getResourceAsStream("/draw.pgn")
         val pgnGame = PgnFile.getGameNumber(`is`, 0)
-        PgnImportExport.setBoard(se.board, pgnGame!!)
+        PgnImportExport.setBoard(b, pgnGame!!)
 
-        println(se.board.toString())
-        println("draw = " + se.board.isDraw)
+        System.out.println(b.toString())
+        System.out.println("draw = " + b.isDraw)
 
-        assertTrue(se.board.isDraw)
+        assertTrue(b.isDraw)
     }
 
     @Test
     fun test3FoldDrawNo() {
-        val se = SearchEngine(Config())
+        val b = Board()
 
         val `is` = this.javaClass.getResourceAsStream("/draw.pgn")
         val pgnGame = PgnFile.getGameNumber(`is`, 0)
-        PgnImportExport.setBoard(se.board, pgnGame!!)
+        PgnImportExport.setBoard(b, pgnGame!!)
 
-        se.board.undoMove()
+        b.undoMove()
 
-        println(se.board.toString())
-        println("draw = " + se.board.isDraw)
+        System.out.println(b.toString())
+        System.out.println("draw = " + b.isDraw)
 
-        assertFalse(se.board.isDraw)
+        assertFalse(b.isDraw)
     }
 
     @Test
