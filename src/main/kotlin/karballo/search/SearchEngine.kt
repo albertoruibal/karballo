@@ -910,7 +910,7 @@ open class SearchEngine(var config: Config) : Runnable {
     /**
      * VOID because GWT does not support Thread.sleep(); overriden in SearchEngineThreaded
      */
-    open fun sleep(time: Int) {
+    open fun sleep(time: Long) {
     }
 
     /**

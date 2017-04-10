@@ -29,21 +29,15 @@ class SearchEngineThreaded(config: Config) : SearchEngine(config) {
         synchronized(startStopSearchLock) {
             while (isSearching) {
                 super.stop()
-                try {
-                    Thread.sleep(10)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-
+                sleep(10)
             }
         }
     }
 
-    override fun sleep(time: Int) {
+    override fun sleep(time: Long) {
         try {
-            Thread.sleep(10)
+            Thread.sleep(time)
         } catch (e: InterruptedException) {
         }
-
     }
 }
