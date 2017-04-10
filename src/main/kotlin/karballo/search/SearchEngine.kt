@@ -16,7 +16,7 @@ import java.util.*
 
  * @author Alberto Alonso Ruibal
  */
-open class SearchEngine(var config: Config) : Runnable {
+open class SearchEngine(var config: Config) {
     var debug = false
 
     internal var searchLock = Any()
@@ -875,7 +875,7 @@ open class SearchEngine(var config: Config) : Runnable {
         depth++
     }
 
-    override fun run() {
+    fun run() {
         var bestMove = Move.NONE
         var ponderMove = Move.NONE
 
@@ -907,10 +907,7 @@ open class SearchEngine(var config: Config) : Runnable {
         }
     }
 
-    /**
-     * VOID because GWT does not support Thread.sleep(); overriden in SearchEngineThreaded
-     */
-    open fun sleep(time: Int) {
+    open fun sleep(time: Long) {
     }
 
     /**

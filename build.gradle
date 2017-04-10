@@ -19,11 +19,14 @@ apply plugin: "kotlin"
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.14.1'
 
     testCompile 'junit:junit:4.12'
     testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
+
+kotlin { experimental { coroutines 'enable' } }
 
 task fastTest(type: Test) {
     ignoreFailures = true

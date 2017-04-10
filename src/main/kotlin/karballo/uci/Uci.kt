@@ -8,6 +8,8 @@ import karballo.search.SearchEngineThreaded
 import karballo.search.SearchObserver
 import karballo.search.SearchParameters
 import karballo.search.SearchStatusInfo
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.runBlocking
 
 /**
  * UCI Interface
@@ -25,7 +27,7 @@ class Uci : SearchObserver {
         config.book = FileBook("/book_small.bin")
     }
 
-    fun processLine(line: String) {
+    suspend fun processLine(line: String) {
         val tokens = line.split(" ".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
         var index = 0
         val command = tokens[index++].toLowerCase()
@@ -144,7 +146,7 @@ class Uci : SearchObserver {
             engine.go(searchParameters)
 
         } else if ("stop" == command) {
-            engine.stop()
+            engine.stopAwait()
 
         } else if ("ucinewgame" == command) {
             engine.board.startPosition()
@@ -195,7 +197,7 @@ class Uci : SearchObserver {
         }
     }
 
-    internal fun loop() {
+    suspend internal fun loop() {
         println(NAME + " by " + AUTHOR)
         while (true) {
             val line = readLine()
@@ -227,5 +229,8 @@ class Uci : SearchObserver {
 }
 
 fun main(args: Array<String>) {
-    Uci().loop()
+    val uci = Uci()
+    runBlocking(CommonPool) {
+        uci.loop()
+    }
 }
