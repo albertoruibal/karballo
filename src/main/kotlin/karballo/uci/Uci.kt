@@ -221,7 +221,7 @@ class Uci : SearchObserver {
     }
 
     companion object {
-        val NAME = "Carballo Chess Engine v1.8"
+        val NAME = "Karballo Chess Engine v1.8"
         val AUTHOR = "Alberto Alonso Ruibal"
     }
 }
