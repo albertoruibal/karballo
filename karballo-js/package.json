@@ -1,0 +1,27 @@
+{
+  "name": "karballo",
+  "version": "0.0.1",
+  "description": "Karballo Chess Engine",
+  "main": "index.js",
+  "dependencies": {
+    "kotlin": "^1.2.20"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node js/karballo.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albertoruibal/karballo.git"
+  },
+  "keywords": [
+    "chess",
+    "engine"
+  ],
+  "author": "Alberto Alonso Ruibal <alberto@alonsoruibal.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/albertoruibal/karballo/issues"
+  },
+  "homepage": "https://github.com/albertoruibal/karballo#readme"
+}
