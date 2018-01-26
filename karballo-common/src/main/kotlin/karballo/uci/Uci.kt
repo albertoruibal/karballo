@@ -1,5 +1,6 @@
 package karballo.uci
 
+import karballo.Board
 import karballo.Config
 import karballo.Move
 import karballo.search.SearchEngine
@@ -16,12 +17,14 @@ class Uci : SearchObserver {
     lateinit var searchParameters: SearchParameters
 
     var config: Config
+    var board: Board
     var searchEngineBuilder: (Config) -> SearchEngine
     var needsReload = true
 
     constructor(config: Config, searchEngineBuilder: (Config) -> SearchEngine) {
         this.config = config
         this.searchEngineBuilder = searchEngineBuilder
+        this.board = Board()
         println(NAME + " by " + AUTHOR)
     }
 
@@ -104,7 +107,7 @@ class Uci : SearchObserver {
                 if ("searchmoves" == arg1) {
                     // While valid moves are found, add to the searchMoves
                     while (index < tokens.size) {
-                        val move = Move.getFromString(engine.board, tokens[index++], true)
+                        val move = Move.getFromString(board, tokens[index++], true)
                         if (move != Move.NONE) {
                             searchParameters.addSearchMove(move)
                         } else {
@@ -136,20 +139,22 @@ class Uci : SearchObserver {
                     searchParameters.isInfinite = true
                 }
             }
+            engine.board.fen = board.initialFen
+            engine.board.doMoves(board.moves)
             engine.go(searchParameters)
 
         } else if ("stop" == command) {
             engine.stop()
 
         } else if ("ucinewgame" == command) {
-            engine.board.startPosition()
+            board.startPosition()
             engine.clear()
 
         } else if ("position" == command) {
             if (index < tokens.size) {
                 val arg1 = tokens[index++]
                 if ("startpos" == arg1) {
-                    engine.board.startPosition()
+                    board.startPosition()
                 } else if ("fen" == arg1) {
                     // FEN string may have spaces
                     val fenSb = StringBuilder()
@@ -162,7 +167,7 @@ class Uci : SearchObserver {
                             fenSb.append(" ")
                         }
                     }
-                    engine.board.fen = fenSb.toString()
+                    board.fen = fenSb.toString()
                 }
 
             }
@@ -170,8 +175,8 @@ class Uci : SearchObserver {
                 val arg1 = tokens[index++]
                 if ("moves" == arg1) {
                     while (index < tokens.size) {
-                        val move = Move.getFromString(engine.board, tokens[index++], true)
-                        engine.board.doMove(move)
+                        val move = Move.getFromString(board, tokens[index++], true)
+                        board.doMove(move)
                     }
                 }
             }
