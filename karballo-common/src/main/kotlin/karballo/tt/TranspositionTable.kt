@@ -98,9 +98,9 @@ class TranspositionTable(sizeMb: Int) {
     val isMyGeneration: Boolean
         get() = getGeneration() == generation
 
-    operator fun set(board: Board, nodeType: Int, distanceToInitialPly: Int, depthAnalyzed: Int, bestMove: Int, score: Int, eval: Int, exclusion: Boolean) {
-        var bestMoveVar = bestMove
-        var scoreVar = score
+    operator fun set(board: Board, nodeType: Int, distanceToInitialPly: Int, depthAnalyzed: Int, bestMoveInVal: Int, scoreInVal: Int, eval: Int, exclusion: Boolean) {
+        var scoreVar = scoreInVal
+        var bestMoveVar = bestMoveInVal
         val key2 = board.key2
         val startIndex = (if (exclusion) board.exclusionKey else board.getKey()).ushr(64 - sizeBits).toInt()
         var replaceIndex = startIndex
@@ -127,7 +127,7 @@ class TranspositionTable(sizeMb: Int) {
             } else if (keys[i] == key2) { // Replace the same position
                 replaceIndex = i
                 if (bestMoveVar == Move.NONE) { // Keep previous best move
-                    bestMoveVar = this.bestMove
+                    bestMoveVar = bestMove
                 }
                 break
             }
