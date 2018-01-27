@@ -1,9 +1,15 @@
 package karballo
 
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ParseMoveTest {
+
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+    }
 
     @Test
     fun testGetFromString1() {

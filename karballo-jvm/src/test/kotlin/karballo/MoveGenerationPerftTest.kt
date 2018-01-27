@@ -2,6 +2,8 @@ package karballo
 
 import karballo.movegen.LegalMoveGenerator
 import karballo.movegen.MoveGenerator
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.experimental.categories.Category
@@ -12,8 +14,8 @@ import org.junit.experimental.categories.Category
  */
 class MoveGenerationPerftTest {
 
-    var legalMovegen: MoveGenerator = LegalMoveGenerator()
-    var board = Board()
+    var legalMovegen: MoveGenerator
+    var board: Board
     lateinit var moveCount: IntArray
     lateinit var captures: IntArray
     lateinit var passantCaptures: IntArray
@@ -21,6 +23,12 @@ class MoveGenerationPerftTest {
     lateinit var promotions: IntArray
     lateinit var checks: IntArray
     lateinit var checkMates: IntArray
+
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+        board = Board()
+        legalMovegen = LegalMoveGenerator()
+    }
 
     private fun reset() {
         moveCount = IntArray(DEPTH)

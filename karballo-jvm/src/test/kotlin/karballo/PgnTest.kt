@@ -3,11 +3,17 @@ package karballo
 import karballo.pgn.GameNodeMove
 import karballo.pgn.PgnFile
 import karballo.pgn.PgnParser
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Test
 import java.io.File
 import java.io.FileInputStream
 
 class PgnTest {
+
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+    }
 
     @Test
     fun testGameNotFullyParsed() {

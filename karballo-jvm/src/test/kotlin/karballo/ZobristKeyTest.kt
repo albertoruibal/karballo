@@ -3,6 +3,8 @@ package karballo
 import karballo.hash.ZobristKey
 import karballo.hash.ZobristKeyFen
 import karballo.movegen.LegalMoveGenerator
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.*
@@ -12,6 +14,10 @@ import java.util.*
  * Also test that after board.setfen(x), x==board.getFen();
  */
 class ZobristKeyTest {
+
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+    }
 
     /**
      * Test that the zobrist key of the board is equal than the obtained with fen

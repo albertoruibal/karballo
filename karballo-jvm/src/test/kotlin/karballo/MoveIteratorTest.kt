@@ -2,11 +2,17 @@ package karballo
 
 import karballo.search.MoveIterator
 import karballo.search.SearchEngine
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MoveIteratorTest {
+
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+    }
 
     private fun testPositionCountingMoves(fen: String, generateMoves: Int, ttMoveString: String?, totalMoves: Int, totalCaptures: Int, totalEnPassant: Int, totalChecks: Int) {
         val b = Board()

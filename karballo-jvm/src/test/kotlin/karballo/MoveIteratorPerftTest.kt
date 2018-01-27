@@ -2,6 +2,8 @@ package karballo
 
 import karballo.movegen.LegalMoveGenerator
 import karballo.search.SearchEngine
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.experimental.categories.Category
@@ -9,7 +11,9 @@ import java.util.*
 
 class MoveIteratorPerftTest {
 
-    var board = Board()
+    var board: Board
+    var searchEngine: SearchEngine
+
     lateinit var moveCount: IntArray
     lateinit var captures: IntArray
     lateinit var passantCaptures: IntArray
@@ -18,7 +22,11 @@ class MoveIteratorPerftTest {
     lateinit var checks: IntArray
     lateinit var checkMates: IntArray
 
-    var searchEngine = SearchEngine(Config())
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+        board = Board()
+        searchEngine = SearchEngine(Config())
+    }
 
     private fun reset() {
         moveCount = IntArray(DEPTH)

@@ -2,10 +2,16 @@ package karballo
 
 import karballo.bitboard.AttacksInfo
 import karballo.bitboard.BitboardUtils
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class AttacksInfoTest {
+
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+    }
 
     @Test
     fun testPinnedBishop() {

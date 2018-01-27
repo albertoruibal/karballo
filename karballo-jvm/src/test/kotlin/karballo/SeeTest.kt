@@ -1,9 +1,15 @@
 package karballo
 
+import karballo.util.JvmPlatformUtils
+import karballo.util.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class SeeTest {
+
+    constructor() {
+        Utils.instance = JvmPlatformUtils()
+    }
 
     private fun testSee(fen: String, moveString: String, expectedSee: Int) {
         val board = Board()
