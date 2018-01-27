@@ -28,24 +28,46 @@ Features
 * FEN notation import/export support, also EPD support for testing
 * JUnit used for testing, multiple test suites provided (Perft, BS2830, BT2630, LCTII, WinAtChess, etc.)
 
-Building
-========
+Building: Jvm
+=============
 
 Carballo uses the Gradle build system with a gradle wrapper.
 
-Build the UCI interface creating a karballo.jar in the project root:
+Build the UCI interface creating a karballo.jar in karballo-jvm/:
 ```
-./gradlew clean proguard
+cd karballo-jvm
+../gradlew clean proguard
 ```
 
-Running
-=======
+Running: Jvm
+============
 
 ```
 java -jar karballo.jar
 ```
 
-Authors
-=======
+Building: Js
+============
+
+Js is a limited version (without opening book and only with a thread) that runs in NodeJS
+
+```
+cd karballo-js
+npm install
+../gradlew clean assemble
+```
+
+This generates a CommonJS module in js/karballo.js
+
+Running: Js
+===========
+
+```
+cd karballo-js
+node js/karballo.js
+```
+
+Author
+======
 
 * Alberto Alonso Ruibal: http://www.alonsoruibal.com

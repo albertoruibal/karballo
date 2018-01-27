@@ -1,65 +1,17 @@
-buildscript {
-    ext.kotlin_version = '1.2.20'
+allprojects {
+    buildscript {
+        ext.kotlin_version = '1.2.21'
+
+        repositories {
+            mavenCentral()
+        }
+        dependencies {
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+            classpath 'net.sf.proguard:proguard-gradle:5.3.3'
+        }
+    }
 
     repositories {
-        jcenter()
+        mavenCentral()
     }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'net.sf.proguard:proguard-gradle:5.3.2'
-    }
-}
-
-repositories {
-    jcenter()
-}
-
-apply plugin: "kotlin"
-
-kapt {
-    useBuildCache = true
-}
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
-    testCompile 'junit:junit:4.12'
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-}
-
-task fastTest(type: Test) {
-    ignoreFailures = true
-
-    useJUnit {
-        excludeCategories 'karballo.SlowTest'
-    }
-}
-
-task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
-    doFirst {
-        configurations.compile.each { println it.name }
-    }
-    ext {
-        obfuscatedJar = "./karballo.jar"
-    }
-    injars jar.archivePath
-    injars configurations.compile
-    outjars obfuscatedJar
-    libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
-    optimizationpasses 5
-    allowaccessmodification
-    dontskipnonpubliclibraryclassmembers
-    target '1.8'
-    keep 'public class karballo.uci.UciKt { *; }'
-    keepclassmembers 'class * extends java.lang.Enum {<fields>; public static **[] values(); public static ** valueOf(java.lang.String); }'
-
-    doLast {
-        logger.lifecycle "[Proguard] Generated obfuscated JAR in ${obfuscatedJar}"
-    }
-}
-
-jar {
-    manifest.attributes("Main-Class": "karballo.uci.UciKt")
 }

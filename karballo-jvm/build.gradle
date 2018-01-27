@@ -1,0 +1,44 @@
+apply plugin: 'kotlin-platform-jvm'
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    expectedBy project(":karballo-common")
+    testCompile "junit:junit:4.12"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+}
+
+task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
+    doFirst {
+        configurations.compile.each { println it.name }
+    }
+    ext {
+        obfuscatedJar = "./karballo.jar"
+    }
+    injars jar.archivePath
+    injars configurations.compile
+    outjars obfuscatedJar
+    libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    optimizationpasses 5
+    allowaccessmodification
+    dontskipnonpubliclibraryclassmembers
+    target '1.8'
+    keep 'public class karballo.MainKt { *; }'
+    keepclassmembers 'class * extends java.lang.Enum {<fields>; public static **[] values(); public static ** valueOf(java.lang.String); }'
+
+    doLast {
+        logger.lifecycle "[Proguard] Generated obfuscated JAR in ${obfuscatedJar}"
+    }
+}
+
+jar {
+    manifest.attributes("Main-Class": "karballo.MainKt")
+}
+
+task fastTest(type: Test) {
+    ignoreFailures = true
+
+    useJUnit {
+        excludeCategories 'karballo.SlowTest'
+    }
+}
