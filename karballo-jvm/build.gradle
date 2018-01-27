@@ -1,19 +1,4 @@
-buildscript {
-    ext.kotlin_version = '1.2.21'
-
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'net.sf.proguard:proguard-gradle:5.3.3'
-    }
-}
 apply plugin: 'kotlin-platform-jvm'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
