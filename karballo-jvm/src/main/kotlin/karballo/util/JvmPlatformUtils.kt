@@ -37,7 +37,7 @@ class JvmPlatformUtils : PlatformUtils {
     }
 
     override fun arrayCopy(src: IntArray, srcPos: Int, dest: IntArray, destPos: Int, length: Int) {
-        arrayCopy(src, srcPos, dest, destPos, length)
+        System.arraycopy(src, srcPos, dest, destPos, length)
     }
 
     override fun exit(code: Int) {
