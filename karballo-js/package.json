@@ -4,7 +4,7 @@
   "description": "Karballo Chess Engine",
   "main": "index.js",
   "dependencies": {
-    "kotlin": "^1.2.20"
+    "kotlin": "^1.2.21"
   },
   "devDependencies": {},
   "scripts": {
